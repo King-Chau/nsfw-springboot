@@ -4,16 +4,15 @@ import org.tensorflow.Graph;
 import org.tensorflow.Session;
 import org.tensorflow.proto.GraphDef;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.InputStream;
 
 /**
- * load TensorFlow GraphDef (.pb)
+ * load TensorFlow GraphDef (.pb) from classpath resource
  */
 public class ModelHolder {
     private static volatile Graph graph;
     private static volatile Session session;
-    private static final String PB_PATH = "models/nsfw_mobilenet.pb";
+    private static final String PB_PATH = "models/nsfw.299x299.pb";
 
     private ModelHolder() {  }
 
@@ -24,8 +23,13 @@ public class ModelHolder {
         if (session == null) {
             synchronized (ModelHolder.class) {
                 if (session == null) {
-                    try {
-                        byte[] graphBytes = Files.readAllBytes(Paths.get(PB_PATH));
+                    try (InputStream is = ModelHolder.class.getClassLoader().getResourceAsStream(PB_PATH)) {
+                        if (is == null) {
+                            throw new RuntimeException("找不到模型资源: " + PB_PATH);
+                        }
+
+                        byte[] graphBytes = is.readAllBytes();
+
                         GraphDef graphDef = GraphDef.parseFrom(graphBytes);
 
                         graph = new Graph();

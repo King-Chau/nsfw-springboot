@@ -15,7 +15,7 @@ public class ImageCensor {
     private static final String INPUT_OP_NAME = "input_1";
     private static final String OUTPUT_OP_NAME = "dense_3/Softmax";
     private static final String[] CLASSES = {"Drawing", "Hentai", "Neutral", "Porn", "Sexy"};
-    private static final int IMAGE_SIZE = 244;
+    private static final int IMAGE_SIZE = 299;
 
     /**
      * nsfw image classification
