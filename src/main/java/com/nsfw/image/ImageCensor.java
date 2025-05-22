@@ -14,7 +14,7 @@ import java.util.Map;
 public class ImageCensor {
     private static final String INPUT_OP_NAME = "input_1";
     private static final String OUTPUT_OP_NAME = "dense_3/Softmax";
-    private static final String[] CLASSES = {"Drawing", "Hentai", "Neutral", "Porn", "Sexy"};
+    private static final String[] CLASSES = {"Drawing(绘画)", "Hentai(二次元色情)", "Neutral(正常)", "Porn(色情)", "Sexy(性感)"};
     private static final int IMAGE_SIZE = 299;
 
     /**
