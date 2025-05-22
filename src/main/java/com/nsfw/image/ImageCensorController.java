@@ -9,21 +9,29 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api")
 public class ImageCensorController {
-
     @PostMapping("/classify")
     public Map<String, Object> classify(@RequestParam("image") MultipartFile file) {
         Map<String, Object> result = new HashMap<>();
         try {
-            // 保存上传文件到临时目录
-            File tempFile = File.createTempFile("upload_", ".jpg");
-            file.transferTo(tempFile);
+            // 使用绝对路径保存上传目录
+            String uploadDirPath = System.getProperty("user.dir") + "/uploads/";
+            File uploadDir = new File(uploadDirPath);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs(); // 创建目录
+            }
+
+            // 使用 UUID 防止重名
+            String filename = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+            File savedFile = new File(uploadDir, filename);
+            file.transferTo(savedFile);
 
             // 预测
-            Map<String, Float> prediction = ImageCensor.predict(tempFile.getAbsolutePath());
+            Map<String, Float> prediction = ImageCensor.predict(savedFile.getAbsolutePath());
 
             // 找出最大概率分类
             String label = prediction.entrySet().stream()
@@ -34,11 +42,11 @@ public class ImageCensorController {
             result.put("success", true);
             result.put("label", label);
             result.put("probabilities", prediction);
-            tempFile.delete(); // 删除临时文件
         } catch (Exception e) {
             result.put("success", false);
             result.put("error", e.getMessage());
         }
         return result;
     }
+
 }
