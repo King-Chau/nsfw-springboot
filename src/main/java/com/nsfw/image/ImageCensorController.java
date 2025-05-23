@@ -1,5 +1,7 @@
 package com.nsfw.image;
 
+import com.oujingzhou.censor.ImageCensor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,6 +16,9 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api")
 public class ImageCensorController {
+    @Autowired
+    private ImageCensor imageCensor;
+
     @PostMapping("/classify")
     public Map<String, Object> classify(@RequestParam("image") MultipartFile file) {
         Map<String, Object> result = new HashMap<>();
@@ -31,7 +36,7 @@ public class ImageCensorController {
             file.transferTo(savedFile);
 
             // 预测
-            Map<String, Float> prediction = ImageCensor.predict(savedFile.getAbsolutePath());
+            Map<String, Float> prediction = imageCensor.predict(savedFile.getAbsolutePath());
 
             // 找出最大概率分类
             String label = prediction.entrySet().stream()

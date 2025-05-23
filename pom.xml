@@ -26,12 +26,10 @@
       <version>${spring.boot.version}</version>
     </dependency>
 
-    <!-- TensorFlow Java -->
     <dependency>
-      <groupId>org.tensorflow</groupId>
-      <artifactId>tensorflow-core-platform</artifactId>
-      <version>${tensorflow.version}</version>
-      <type>pom</type>
+      <groupId>com.oujingzhou</groupId>
+      <artifactId>nsfw-java</artifactId>
+      <version>0.1.0</version>
     </dependency>
 
     <!-- 用于处理 Multipart 图片上传 -->
