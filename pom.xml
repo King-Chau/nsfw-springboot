@@ -29,7 +29,7 @@
     <dependency>
       <groupId>com.oujingzhou</groupId>
       <artifactId>nsfw-java</artifactId>
-      <version>0.1.0</version>
+      <version>1.0.0</version>
     </dependency>
 
     <!-- 用于处理 Multipart 图片上传 -->
